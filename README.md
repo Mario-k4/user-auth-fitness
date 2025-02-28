@@ -39,7 +39,7 @@ A microservice for handling user authentication in the **Workout App**. This ser
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/user-auth.git
+   git clone https://github.com/Mario-k4/user-auth-fitness.git
    cd user-auth
    
 2. **Install Dependencies**:
