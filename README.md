@@ -43,41 +43,41 @@ A microservice for handling user authentication in the **Workout App**. This ser
    cd user-auth
    
 2. **Install Dependencies**:
-```bash
-npm install
-```
+    ```bash
+    npm install
+    ```
 
 3. **Set Up Environment Variables**:
-- Create a ```.env``` file in the root directory:
-```bash
-DB_CONNECTION=postgres
-DB_HOST=localhost
-DB_USERNAME=postgres
-DB_PASSWORD=mariomario1
-DB_NAME=user_auth_fitness
-DB_PORT=5432
-DB_SYNC=false
-DB_LOGGING=true
-DB_ENTITIES=src/entity/**/*.ts
-```
+    - Create a ```.env``` file in the root directory:
+    ```bash
+    DB_CONNECTION=postgres
+    DB_HOST=localhost
+    DB_USERNAME=postgres
+    DB_PASSWORD=mariomario1
+    DB_NAME=user_auth_fitness
+    DB_PORT=5432
+    DB_SYNC=false
+    DB_LOGGING=true
+    DB_ENTITIES=src/entity/**/*.ts
+    ```
 
-4 **Set Up the Database**:
+4. **Set Up the Database**:
 
-- Start PostgreSQL and create a database named ```user_auth_fitness```.
+    - Start PostgreSQL and create a database named ```user_auth_fitness```.
+    
+    - Run migrations using TypeORM:
 
-- Run migrations using TypeORM:
-
-```bash
-npm run typeorm migration:run
-```
+    ```bash
+    npm run typeorm migration:run
+    ```
 5. **Run the Service**:
 
-```bash
-npm run dev
-```
+    ```bash
+    npm run dev
+    ```
 6. **Access the Service**:
 
-- The service will be running at ```http://localhost:5432```.
+    - The service will be running at ```http://localhost:5432```.
 
 ## **API Endpoints**
 ### **Authentication**
@@ -118,13 +118,13 @@ npm run dev
 
   - Requires a valid JWT token in the ```Authorization``` header.
   - Response:
-    ```json
+  ```json
     {
     "id": 1,
     "username": "john_doe",
     "email" : "john@example.com"
     }
-    ```
+   ```
 
 ## **Integration with Other Services**
 This service is designed to work with the backend and frontend repositories:
@@ -158,7 +158,7 @@ Contributions are welcome! Here's how you can contribute:
 ## **Contact**
 If you have any questions or feedback, feel free to reach out:
 
-Your Name - cvetanoski.mario92@gmail.com
+Mario Cvetanoski - cvetanoski.mario92@gmail.com
 
 GitHub: Mario-k4
 
