@@ -1,11 +1,11 @@
 import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
 import { User } from "../../user/entities/user.entity";
-import { BaseModel } from "../../shared/entities/BaseModel.entity";
+import { BaseEntity } from "../../core/entities/base.entity.ts";
 import { IsEnum } from "class-validator";
-import { EventType } from "../../shared/utils/enums/UserEvent.enum";
+import { EventType } from "../../core/enums/user-events.enum";
 
 @Entity()
-export class UserEvent extends BaseModel {
+export class UserEvent extends BaseEntity {
   @ManyToOne(() => User, { eager: true })
   @JoinColumn()
   user: User;
