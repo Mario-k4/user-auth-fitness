@@ -1,4 +1,5 @@
 # **User Authentication Service**
+![Blank diagram](https://github.com/user-attachments/assets/5e1345f1-4e6c-4622-a25e-32cb261cd6b7)
 
 A microservice for handling user authentication in the **Workout App**. This service provides endpoints for user registration, login, and JWT-based authentication.
 
