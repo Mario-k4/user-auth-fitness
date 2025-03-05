@@ -1,7 +1,12 @@
-import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import {
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    BaseEntity as TypeORMBaseEntity,
+} from "typeorm";
 import { IsUUID, IsDate } from "class-validator";
 
-export abstract class BaseEntity {
+export abstract class BaseEntity extends TypeORMBaseEntity {
     @PrimaryGeneratedColumn("uuid")
     @IsUUID()
     id: string;
