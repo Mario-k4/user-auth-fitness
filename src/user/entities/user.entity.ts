@@ -1,13 +1,13 @@
 import { Column, Entity } from "typeorm";
-import { BaseModel } from "../../shared/entities/BaseModel.entity";
-import { IsEmail, IsString, Length } from "class-validator";
+import { BaseEntity } from "../../core/entities/base.entity.ts";
+import { IsEmail, IsOptional, IsString, Length } from "class-validator";
 
 @Entity()
-export class User extends BaseModel {
-    @Column({ unique: true })
+export class User extends BaseEntity {
+    @Column({ unique: true, nullable: true })
     @IsString()
     @Length(3, 20)
-    username: string;
+    username?: string;
 
     @Column({ unique: true })
     @IsString()
@@ -18,7 +18,8 @@ export class User extends BaseModel {
     @IsString()
     password: string;
 
-    @Column()
+    @Column({ nullable: true })
     @IsString()
+    @IsOptional()
     name: string;
 }

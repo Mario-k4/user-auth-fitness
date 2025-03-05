@@ -53,9 +53,9 @@ A microservice for handling user authentication in the **Workout App**. This ser
     ```bash
     DB_CONNECTION=postgres
     DB_HOST=localhost
-    DB_USERNAME=postgres
-    DB_PASSWORD=mariomario1
-    DB_NAME=user_auth_fitness
+    DB_USERNAME=username
+    DB_PASSWORD=password
+    DB_NAME=dbname
     DB_PORT=5432
     DB_SYNC=false
     DB_LOGGING=true
