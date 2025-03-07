@@ -40,6 +40,20 @@ export class UserController {
         }
     }
 
+    async getAllUsers(req: Request, res: Response) {
+        try {
+            const users = await userService.getAllUsers()
+            if (users.length === 0) {
+                res.status(404).json({ message: 'No students found' });
+                return;
+            }
+
+            res.status(200).json(users);
+        } catch (error) {
+            throw new Error('An error occurred while fetching the list of students');
+        }
+    }
+
     async updateUser(req: Request, res: Response) {
         try {
             const { id } = req.params

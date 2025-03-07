@@ -30,6 +30,14 @@ export class UserService {
         }
     }
 
+    async getAllUsers() {
+        return await User.find({
+            order: {
+                username: 'ASC',
+            },
+        });
+    }
+
     async updateUser(updateUserDto: UpdateUserDto) {
         const user = await User.findOne({ where: { id: updateUserDto.id } })
         if (!user) {
