@@ -8,12 +8,12 @@ import { EventType } from "../../core/enums/user-events.enum";
 export class UserEvent extends BaseEntity {
   @ManyToOne(() => User, { eager: true })
   @JoinColumn()
-  user: User;
+  user!: User;
 
   @Column({ type: "enum", enum: EventType })
   @IsEnum(EventType)
-  eventType: EventType;
+  eventType!: EventType;
 
   @Column({ nullable: true })
-  description: string;
+  description!: string;
 }

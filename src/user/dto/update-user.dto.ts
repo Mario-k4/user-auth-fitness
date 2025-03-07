@@ -1,4 +1,5 @@
-import { IsEmail, IsOptional, IsString, IsUUID, MinLength } from "class-validator";
+import { IsEmail, IsEnum, IsOptional, IsString, IsUUID, MinLength } from "class-validator";
+import { UserRoleEnum } from "../../core/enums/user-role.enum";
 
 export class UpdateUserDto {
     @IsUUID()
@@ -11,6 +12,10 @@ export class UpdateUserDto {
     @IsOptional()
     @IsEmail()
     email?: string
+
+    @IsOptional()
+    @IsEnum(UserRoleEnum)
+    role?: UserRoleEnum
 
     @IsOptional()
     @IsString()

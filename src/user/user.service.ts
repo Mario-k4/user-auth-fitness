@@ -12,17 +12,17 @@ export class UserService {
 
     async getUserById(id: string): Promise<User | null> {
         try {
-            const user = User.findOne({ where: { id } })
+            const user = await User.findOne({ where: { id } })
             return user
         } catch (error) {
             console.error('Error in getUserById:', error)
-            return null
+            throw error
         }
     }
 
     async getUserByEmail(email: string): Promise<User | null> {
         try {
-            const user = User.findOne({ where: { email } })
+            const user = await User.findOne({ where: { email } })
             return user;
         } catch (error) {
             console.error('Error in getUserByEmail:', error)
@@ -46,6 +46,9 @@ export class UserService {
         }
         if (updateUserDto.name) {
             user.name = updateUserDto.name
+        }
+        if (updateUserDto.role) {
+            user.role = updateUserDto.role
         }
         await user.save();
         return user;

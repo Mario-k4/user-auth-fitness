@@ -12,7 +12,7 @@ export class UserController {
             const user = await userService.createUser(email, password);
             res.status(201).json(user);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: error });
         }
     }
 
@@ -24,7 +24,7 @@ export class UserController {
             if (!user) return res.status(404).json({ error: "User not found" });
             res.json(user);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: error });
         }
     }
 
@@ -36,13 +36,15 @@ export class UserController {
             if (!user) return res.status(404).json({ error: "User not found" });
             res.json(user);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error });
         }
     }
 
     async updateUser(req: Request, res: Response) {
         try {
+            const { id } = req.params
             const updateUserDto: UpdateUserDto = req.body
+            updateUserDto.id = id;
 
             const updatedUser = await userService.updateUser(updateUserDto)
 
@@ -51,7 +53,7 @@ export class UserController {
                 user: updatedUser
             })
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: error });
         }
     }
 
@@ -60,7 +62,7 @@ export class UserController {
             await userService.deleteUser(req.params.id);
             res.json({ message: "User deleted successfully" });
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: error });
         }
     }
 }
