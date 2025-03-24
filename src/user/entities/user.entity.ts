@@ -1,6 +1,6 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity } from "typeorm";
 import { BaseEntity } from "../../core/entities/base.entity.ts";
-import { IsDate, IsEmail, IsEnum, IsOptional, IsString, Length } from "class-validator";
+import { IsBoolean, IsDate, IsEmail, IsEnum, IsString, Length } from "class-validator";
 import { UserRoleEnum } from "../../core/enums/user-role.enum"
 
 @Entity()
@@ -27,9 +27,8 @@ export class User extends BaseEntity {
     @IsEnum(UserRoleEnum)
     role!: UserRoleEnum
 
-    @Column({ nullable: true })
+    @Column({})
     @IsString()
-    @IsOptional()
     name!: string;
 
     @Column({ nullable: true })
@@ -42,5 +41,26 @@ export class User extends BaseEntity {
 
     @Column({ nullable: true, type: "timestamptz" })
     @IsDate()
-    refreshTokenExpiresAt!: Date | null
+    refreshTokenExpiresAt!: Date | null;
+
+    @Column({ nullable: true })
+    @IsString()
+    otp!: string | null;
+
+    @Column({ nullable: true, type: "timestamptz" })
+    @IsDate()
+    otpExpiresAt!: Date | null;
+
+    @Column({ unique: true, nullable: true })
+    @IsString()
+    secretKey!: string;
+
+    @Column({ default: false })
+    @IsBoolean()
+    twoFactorEnabled!: boolean;
+
+    @Column({ nullable: true })
+    @IsString()
+    twoFactorMethod!: string;
+
 }

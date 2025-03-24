@@ -4,15 +4,26 @@ import { AppDataSource } from "./configuration/data-source";
 import userRouter from "./user/routes/user.route";
 import authRouter from "./auth/auth.route";
 import cookieParser from "cookie-parser";
+import twoFactorAuthRouter from "./2FA/twoFactorAuth.route";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_URL = process.env.API_URL
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
+app.use(
+    cors({
+        origin: FRONTEND_URL, // Allow frontend to access backend
+        credentials: true, // Allow cookies (important for auth)
+    })
+);
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(`${API_URL}`, userRouter);
 app.use(`${API_URL}`, authRouter);
+app.use(`${API_URL}`, twoFactorAuthRouter);
 
 AppDataSource.initialize()
     .then(() => {

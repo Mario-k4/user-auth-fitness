@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../user/user.service";
-import { comparePassword } from "../utils/hash";
+import { comparePassword, hashPassword } from "../utils/hash";
 import { generateRefreshToken, generateToken, verifyToken } from "../utils/jwt";
 import { ONE_WEEK_IN_MS } from "../utils/constants";
 import { AuthUserDto } from "../user/dto/auth-user.dto";
@@ -14,7 +14,7 @@ const userService = new UserService()
 const emailService = new EmailService()
 
 export const registerHandler = async (req: Request, res: Response): Promise<void> => {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
     try {
         const existingUser = await userService.getUserByEmail(email);
@@ -23,7 +23,7 @@ export const registerHandler = async (req: Request, res: Response): Promise<void
             return
         }
 
-        const user = await userService.createUser(email, password);
+        const user = await userService.createUser(name, email, password);
         res.json({ user });
         return
     } catch (error) {
@@ -148,6 +148,7 @@ export const forgotPasswordHandler = async (req: Request, res: Response): Promis
         const resetToken = generateToken(user.id, user.role);
         const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${encodeURIComponent(resetToken)}`;
         await emailService.sendPasswordResetEmail(user.email, resetLink)
+        await userEventService.createEvent(user, EventType.PASSWORD_RESET, "Password reset.")
 
         res.json({ message: "Password reset link sent." });
     } catch (error) {
@@ -155,3 +156,35 @@ export const forgotPasswordHandler = async (req: Request, res: Response): Promis
         res.status(500).json({ message: "Internal server error" });
     }
 }
+export const resetPasswordHandler = async (req: Request, res: Response): Promise<void> => {
+    const { token, newPassword } = req.body;
+    try {
+        const decoded = verifyToken(token, process.env.JWT_SECRET) as JwtPayload;
+
+        const userId = decoded.id;
+
+        if (!userId) {
+            res.status(400).json({ message: "Invalid token payload." });
+            return;
+        }
+
+        const user = await userService.getUserById(userId);
+
+        if (!user) {
+            res.status(404).json({ message: "User not found." });
+            return;
+        }
+
+        const hashedPassword = await hashPassword(newPassword);
+
+        user.password = hashedPassword;
+        await user.save();
+        await userEventService.createEvent(user, EventType.PASSWORD_CHANGED, "Password changed.")
+        await emailService.sendPasswordChangedEmail(user.email);
+
+        res.json({ message: "Password reset successfully" });
+    } catch (error) {
+        console.error("Password reset error", error);
+        res.status(400).json({ message: "Invalid or expired token." });
+    }
+};

@@ -2,9 +2,9 @@ import { hashPassword } from "../utils/hash";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./entities/user.entity";
 export class UserService {
-    async createUser(email: string, password: string) {
+    async createUser(name: string, email: string, password: string) {
         const hashedPassword = await hashPassword(password)
-        const user = User.create({ email, password: hashedPassword })
+        const user = User.create({ name: name, email, password: hashedPassword })
         await user.save()
         return user;
     }

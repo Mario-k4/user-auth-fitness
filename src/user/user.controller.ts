@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { UserService } from "./user.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { verifyToken } from "../utils/jwt";
+import { hashPassword } from "../utils/hash";
 
 const userService = new UserService()
 
@@ -8,8 +10,8 @@ export class UserController {
 
     async createUser(req: Request, res: Response) {
         try {
-            const { email, password } = req.body;
-            const user = await userService.createUser(email, password);
+            const { name, email, password } = req.body;
+            const user = await userService.createUser(name, email, password);
             res.status(201).json(user);
         } catch (error) {
             res.status(400).json({ error: error });
