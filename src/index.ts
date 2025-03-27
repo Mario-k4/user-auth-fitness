@@ -6,6 +6,9 @@ import authRouter from "./auth/auth.route";
 import cookieParser from "cookie-parser";
 import twoFactorAuthRouter from "./2FA/twoFactorAuth.route";
 import cors from "cors";
+import workoutRouter from "./workout/routes/workout.route";
+import exerciseRouter from "./exercise/routes/exercise.route";
+import workoutExerciseRouter from "./workoutExercise/routes/workoutExercise.route";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +27,9 @@ app.use(cookieParser());
 app.use(`${API_URL}`, userRouter);
 app.use(`${API_URL}`, authRouter);
 app.use(`${API_URL}`, twoFactorAuthRouter);
+app.use(`${API_URL}/workouts`, workoutRouter);
+app.use(`${API_URL}/exercises`, exerciseRouter);
+app.use(`${API_URL}/workout-exercises`, workoutExerciseRouter);
 
 AppDataSource.initialize()
     .then(() => {

@@ -1,7 +1,9 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
+import { IsBoolean, IsDate, IsEmail, IsEnum, IsOptional, IsString, Length } from "class-validator";
+import { UserRoleEnum } from "../../core/enums/user-role.enum";
+import { Workout } from "../../workout/entities/workout.entity";
+import { Exercise } from "../../exercise/entities/exercise.entity";
 import { BaseEntity } from "../../core/entities/base.entity.ts";
-import { IsBoolean, IsDate, IsEmail, IsEnum, IsString, Length } from "class-validator";
-import { UserRoleEnum } from "../../core/enums/user-role.enum"
 
 @Entity()
 export class User extends BaseEntity {
@@ -25,9 +27,9 @@ export class User extends BaseEntity {
         default: UserRoleEnum.TRAINEE
     })
     @IsEnum(UserRoleEnum)
-    role!: UserRoleEnum
+    role!: UserRoleEnum;
 
-    @Column({})
+    @Column()
     @IsString()
     name!: string;
 
@@ -45,6 +47,7 @@ export class User extends BaseEntity {
 
     @Column({ nullable: true })
     @IsString()
+    @IsOptional()
     otp!: string | null;
 
     @Column({ nullable: true, type: "timestamptz" })
@@ -53,7 +56,8 @@ export class User extends BaseEntity {
 
     @Column({ unique: true, nullable: true })
     @IsString()
-    secretKey!: string;
+    @IsOptional()
+    secretKey!: string | null;
 
     @Column({ default: false })
     @IsBoolean()
@@ -63,4 +67,9 @@ export class User extends BaseEntity {
     @IsString()
     twoFactorMethod!: string;
 
+    @OneToMany(() => Exercise, (exercise) => exercise.createdBy)
+    exercises!: Exercise[];
+
+    @OneToMany(() => Workout, (workout) => workout.user)
+    workouts!: Workout[];
 }
