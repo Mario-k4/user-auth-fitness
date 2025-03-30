@@ -2,9 +2,9 @@ import { hashPassword } from "../utils/hash";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./entities/user.entity";
 export class UserService {
-    async createUser(email: string, password: string) {
+    async createUser(name: string, email: string, password: string) {
         const hashedPassword = await hashPassword(password)
-        const user = User.create({ email, password: hashedPassword })
+        const user = User.create({ name: name, email, password: hashedPassword })
         await user.save()
         return user;
     }
@@ -12,22 +12,30 @@ export class UserService {
 
     async getUserById(id: string): Promise<User | null> {
         try {
-            const user = User.findOne({ where: { id } })
+            const user = await User.findOne({ where: { id } })
             return user
         } catch (error) {
             console.error('Error in getUserById:', error)
-            return null
+            throw error
         }
     }
 
     async getUserByEmail(email: string): Promise<User | null> {
         try {
-            const user = User.findOne({ where: { email } })
+            const user = await User.findOne({ where: { email } })
             return user;
         } catch (error) {
             console.error('Error in getUserByEmail:', error)
             return null
         }
+    }
+
+    async getAllUsers() {
+        return await User.find({
+            order: {
+                username: 'ASC',
+            },
+        });
     }
 
     async updateUser(updateUserDto: UpdateUserDto) {
@@ -46,6 +54,9 @@ export class UserService {
         }
         if (updateUserDto.name) {
             user.name = updateUserDto.name
+        }
+        if (updateUserDto.role) {
+            user.role = updateUserDto.role
         }
         await user.save();
         return user;
