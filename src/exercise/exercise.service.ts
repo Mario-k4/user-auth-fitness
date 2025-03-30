@@ -53,6 +53,21 @@ export class ExerciseService {
         }
     }
 
+    async getDistinctCategories(): Promise<ExerciseCategory[]> {
+        try {
+            const categories = await Exercise.createQueryBuilder("exercise")
+                .select("DISTINCT exercise.category", "category")
+                .getRawMany();
+            if (!categories.length) {
+                throw new Error("No categories found.");
+            }
+            return categories.map((c) => c.category);
+        } catch (error) {
+            console.error("Error fetching distinct categories:", error);
+            throw new Error(error.message || "Unable to fetch distinct categories. Please try again later.");
+        }
+    }
+
     async updateExercise(id: string, updateExerciseDto: UpdateExerciseDto) {
         try {
             const exercise = await Exercise.findOne({ where: { id } });

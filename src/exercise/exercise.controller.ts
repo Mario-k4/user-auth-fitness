@@ -3,6 +3,7 @@ import { ExerciseService } from "./exercise.service";
 import { ExerciseCategory } from "../core/enums/exercise-category.enum";
 import { CreateExerciseDto } from "./dto/create-exercise.dto";
 import { UpdateExerciseDto } from "./dto/update-exercise.dto";
+import { Exercise } from "./entities/exercise.entity";
 
 const exerciseService = new ExerciseService();
 
@@ -42,6 +43,23 @@ export const getExerciseByName = async (req: Request, res: Response): Promise<vo
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const getCategories = async (_: Request, res: Response): Promise<void> => {
+    try {
+        const categories = await exerciseService.getDistinctCategories();
+
+        if (categories.length === 0) {
+            res.status(404).json({ message: "No categories found" });
+            return;
+        }
+
+        res.status(200).json(categories);
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 
 export const getExercisesByCategory = async (req: Request, res: Response): Promise<void> => {
     try {

@@ -40,3 +40,16 @@ export const updateExercisesForWorkout = async (req: Request, res: Response): Pr
         res.status(500).json({ message: "Internal server error", error: error.message });
     }
 };
+
+export const deleteExerciseForWorkout = async (req: Request, res: Response): Promise<void> => {
+    const { workoutId } = req.params;
+    const { exerciseId } = req.body;
+
+    try {
+        const result = await workoutExerciseService.deleteExerciseForWorkout(workoutId, exerciseId);
+        res.status(200).json({ message: "Exercise deleted successfully", result });
+    } catch (error) {
+        console.error("Error deleting exercise for workout:", error);
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};
